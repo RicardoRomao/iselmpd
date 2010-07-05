@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="orders" size="993,531" id="testmapper.orders" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D3130303020536572696530312D556E697454657374732F6D63617276616C686F">
+  <children xsi:type="editmodel:ClassEditModel" name="Customer" location="405,178" size="149,97" id="testmapper.orders/Customer" runTimeClassModel="getName(),Customer(Ljava.lang.String;),name">
+    <children xsi:type="editmodel:CompartmentEditModel" size="67,16">
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="testmapper.orders/Customer#name"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="126,32">
+      <children xsi:type="editmodel:MethodEditModel" name="Customer" id="testmapper.orders/Customer#Customer(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="testmapper.orders/Customer#getName()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" autoLocated="true" id="testmapper.orders/Customer@customer+testmapper.orders/Order@" source="//@children.0" target="//@children.3" targetEnd="//@children.0/@sourceConnections.0/@children.2" label="//@children.0/@sourceConnections.0/@children.0" sourceEnd="//@children.0/@sourceConnections.0/@children.1" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:WireLabelEditModel" size="0,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="customer" location="0,10" id="testmapper.orders/Customer@customer+testmapper.orders/Order@|testmapper.orders/Customer#customer" attachSource="true" multiplicityLabel="//@children.0/@sourceConnections.0/@children.1/@children.1" roleLabel="//@children.0/@sourceConnections.0/@children.1/@children.0" aggregationKind="Aggregration" navigable="true">
+        <children xsi:type="editmodel:LabelEditModel" name=" ~ customer" location="341,195" size="57,14" anchorKind="FirstPart"/>
+        <children xsi:type="editmodel:LabelEditModel" name="0..1" location="380,167" size="18,14" anchorKind="FirstPart"/>
+      </children>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="259,113" id="testmapper.orders/Customer@customer+testmapper.orders/Order@|testmapper.orders/Order#"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.2/@sourceConnections.0" name="Product" location="765,50" size="208,129" id="testmapper.orders/Product" runTimeClassModel="getName(),price,name,getPrice(),Product(Ljava.lang.String;D)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="69,32">
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="testmapper.orders/Product#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="price" id="testmapper.orders/Product#price"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="185,48">
+      <children xsi:type="editmodel:MethodEditModel" name="Product" id="testmapper.orders/Product#Product(Ljava.lang.String;D)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="testmapper.orders/Product#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPrice" id="testmapper.orders/Product#getPrice()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.3/@sourceConnections.0" name="OrderLineItem" location="405,50" size="251,97" id="testmapper.orders/OrderLineItem" runTimeClassModel="getTotal(),OrderLineItem(Ltestmapper.orders.Product;I),quantity">
+    <children xsi:type="editmodel:CompartmentEditModel" size="62,16">
+      <children xsi:type="editmodel:AttributeEditModel" name="quantity" id="testmapper.orders/OrderLineItem#quantity"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="228,32">
+      <children xsi:type="editmodel:MethodEditModel" name="OrderLineItem" id="testmapper.orders/OrderLineItem#OrderLineItem(Ltestmapper.orders.Product;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTotal" id="testmapper.orders/OrderLineItem#getTotal()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" autoLocated="true" id="testmapper.orders/Product@product+testmapper.orders/OrderLineItem@" source="//@children.2" target="//@children.1" targetEnd="//@children.2/@sourceConnections.0/@children.2" label="//@children.2/@sourceConnections.0/@children.0" sourceEnd="//@children.2/@sourceConnections.0/@children.1" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:WireLabelEditModel" size="0,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="251,48" id="testmapper.orders/Product@product+testmapper.orders/OrderLineItem@|testmapper.orders/OrderLineItem#" attachSource="true" roleLabel="//@children.2/@sourceConnections.0/@children.1/@children.0">
+        <children xsi:type="editmodel:LabelEditModel" location="663,77" size="0,14" anchorKind="FirstPart"/>
+      </children>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="product" location="0,48" id="testmapper.orders/Product@product+testmapper.orders/OrderLineItem@|testmapper.orders/Product#product" multiplicityLabel="//@children.2/@sourceConnections.0/@children.2/@children.1" roleLabel="//@children.2/@sourceConnections.0/@children.2/@children.0" aggregationKind="Aggregration" navigable="true">
+        <children xsi:type="editmodel:LabelEditModel" name=" - product" location="711,77" size="47,14" anchorKind="LastPart"/>
+        <children xsi:type="editmodel:LabelEditModel" name="0..1" location="740,105" size="18,14" anchorKind="LastPart"/>
+      </children>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.0" name="Order" location="15,50" size="269,113" id="testmapper.orders/Order" runTimeClassModel="getTotal(),Order(Ltestmapper.orders.Customer;),addOrderLineItem(Ltestmapper.orders.Product;I),getCustomerName()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="246,64">
+      <children xsi:type="editmodel:MethodEditModel" name="Order" id="testmapper.orders/Order#Order(Ltestmapper.orders.Customer;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addOrderLineItem" id="testmapper.orders/Order#addOrderLineItem(Ltestmapper.orders.Product;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCustomerName" id="testmapper.orders/Order#getCustomerName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTotal" id="testmapper.orders/Order#getTotal()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" autoLocated="true" id="testmapper.orders/OrderLineItem@orderLineItems+testmapper.orders/Order@order" source="//@children.3" target="//@children.2" targetEnd="//@children.3/@sourceConnections.0/@children.2" label="//@children.3/@sourceConnections.0/@children.0" sourceEnd="//@children.3/@sourceConnections.0/@children.1" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:WireLabelEditModel" size="0,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="order" location="269,48" id="testmapper.orders/OrderLineItem@orderLineItems+testmapper.orders/Order@order|testmapper.orders/Order#order" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="orderLineItems" location="0,48" id="testmapper.orders/OrderLineItem@orderLineItems+testmapper.orders/Order@order|testmapper.orders/OrderLineItem#orderLineItems" multiplicityLabel="//@children.3/@sourceConnections.0/@children.2/@children.1" roleLabel="//@children.3/@sourceConnections.0/@children.2/@children.0" aggregationKind="Aggregration" navigable="true">
+        <children xsi:type="editmodel:LabelEditModel" name=" ~ orderLineItems" location="315,77" size="83,14" anchorKind="LastPart"/>
+        <children xsi:type="editmodel:LabelEditModel" name="*" location="394,105" size="4,14" anchorKind="LastPart"/>
+      </children>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" level="-1" showScope="InPackage" properties="wireOptions=3;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" showMethodsParameterTypes="true" showMethodsReturnType="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showProtectedMethods="true" showPublicMethods="true" showPackageMethods="true" showPrivateMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>
