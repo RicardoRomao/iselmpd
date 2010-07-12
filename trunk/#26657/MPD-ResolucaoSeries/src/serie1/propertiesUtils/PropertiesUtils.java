@@ -7,13 +7,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 import java.util.Map;
+import trabalho.misc.IPropertyFilter;
 
 public class PropertiesUtils {
 
     public static Map<String, Object> getvisibleProperties(Object obj) {
-
-        String fieldName;
-        Object fieldValue;
         Map<String, Object> ret = new Hashtable<String, Object>();
         Method[] methods = obj.getClass().getDeclaredMethods();
 
@@ -32,9 +30,6 @@ public class PropertiesUtils {
     }
 
     public static Map<String, PropertyInfo> getVisiblePropertiesWithKind(Object obj) {
-
-        String fieldName;
-        Object fieldValue;
         Map<String, PropertyInfo> ret = new Hashtable<String, PropertyInfo>();
         Method[] methods = obj.getClass().getDeclaredMethods();
         PropertyKind kind;
@@ -65,6 +60,23 @@ public class PropertiesUtils {
                             kind
                         )
                     );
+            }
+        }
+        return ret;
+    }
+
+    public static Map<String, Method> getVisibleProperties(Object obj, IPropertyFilter filter) {
+        Map<String, Method> ret = new Hashtable<String, Method>();
+        Method[] methods = obj.getClass().getDeclaredMethods();
+        VisibleProperty prop;
+
+        for (Method method : methods) {
+            if (method.getParameterTypes().length == 0 && method.isAnnotationPresent(VisibleProperty.class)) {
+            	prop = method.getAnnotation(VisibleProperty.class);
+                if (filter == null || (filter != null && filter.accept(prop)))
+                {
+                	ret.put(prop.name(), method);
+                }
             }
         }
         return ret;
