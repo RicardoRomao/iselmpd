@@ -1,17 +1,13 @@
 package serie3.grupo1.dataMappers.registry;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
+import serie3.grupo1.dataConnector.JdbcConnector;
 import serie3.grupo1.dataConnector.JdbcDataSource;
-import serie3.grupo1.dataMappers.CategoryMapper;
-import serie3.grupo1.dataMappers.CustomerMapper;
 import serie3.grupo1.dataMappers.IDataMapper;
-import serie3.grupo1.dataMappers.OrderDetailsMapper;
-import serie3.grupo1.dataMappers.OrderMapper;
-import serie3.grupo1.dataMappers.ProductMapper;
-import serie3.grupo1.dataMappers.ShipperMapper;
-import serie3.grupo1.dataMappers.SupplierMapper;
 import serie3.grupo1.domainObjects.*;
 
 public class MapperRegistry {
@@ -21,7 +17,7 @@ public class MapperRegistry {
     
     private static final Object _monitor = new Object();
     private static final DataSource _ds = JdbcDataSource.getDataSource();
-    
+    private static final JdbcConnector _connector = new JdbcConnector(_ds);
     private static MapperRegistry _current = null;
     
     public static MapperRegistry current(){
@@ -32,17 +28,22 @@ public class MapperRegistry {
         }
     }
 
-    private MapperRegistry(){
-        _mappers.put(Category.class, new CategoryMapper(_ds));
-        _mappers.put(Customer.class, new CustomerMapper(_ds));
-        _mappers.put(Shipper.class, new ShipperMapper(_ds));
-        _mappers.put(Supplier.class, new SupplierMapper(_ds));
-        _mappers.put(Order.class, new OrderMapper(_ds));
-        _mappers.put(Product.class, new ProductMapper(_ds));
-        _mappers.put(OrderDetails.class, new OrderDetailsMapper(_ds));
+    private MapperRegistry(){ }
+
+    public void add(Class<? extends DomainObject> klass,
+            IDataMapper<?,? extends DomainObject> mapper) {
+        _mappers.put(klass, mapper);
     }
 
     public IDataMapper get(Class<? extends DomainObject> klass){
-        return (IDataMapper)_mappers.get(klass);
+        return _mappers.get(klass);
+    }
+
+    public Collection<IDataMapper<?,? extends DomainObject>> getAllMappers() {
+        return Collections.unmodifiableCollection(_mappers.values());
+    }
+
+    public Collection<IDataMapper<?,? extends DomainObject>> getAllMappersInReverse() {
+        return Collections.unmodifiableCollection(_mappers.values());
     }
 }

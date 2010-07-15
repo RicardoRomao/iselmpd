@@ -17,7 +17,6 @@ public class App {
         viewOrderDetails();
     }
 
-
     public static void viewOrderDetails() {
 
         OrderDetailsMapper orderDetMap = (OrderDetailsMapper)

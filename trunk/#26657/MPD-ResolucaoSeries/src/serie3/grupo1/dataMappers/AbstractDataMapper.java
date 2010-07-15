@@ -1,24 +1,26 @@
 package serie3.grupo1.dataMappers;
 
-import exceptions.Serie3_DataMapperException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
-import javax.sql.DataSource;
+import serie3.grupo1.dataConnector.AbstractJdbcAction;
+import serie3.grupo1.dataConnector.JdbcAction;
+import serie3.grupo1.dataConnector.JdbcConnector;
 import serie3.grupo1.dataMappers.filters.IFilter;
+import serie3.grupo1.domainObjects.DomainObject;
 
-public abstract class AbstractDataMapper<IDType, DType>
-        implements IDataMapper<IDType, DType>{
+public abstract class AbstractDataMapper<IDType, DType extends DomainObject<IDType,DType>>
+        implements IDataMapper<IDType,DType> {
 
 
     private final Map<IDType, DType> _identityMap = new Hashtable<IDType, DType>();
-    private final DataSource _ds;
+    private JdbcConnector _connector;
 
     private final Set<DType> _cleanObjects = new HashSet<DType>();
     private final Set<DType> _dirtyObjects = new HashSet<DType>();
@@ -32,11 +34,30 @@ public abstract class AbstractDataMapper<IDType, DType>
     abstract String doGetDeleteStatement();
 
     abstract void doBindFindStatement(PreparedStatement st, IDType key);
-    
+    abstract void doBindDeleteStatement(PreparedStatement st, IDType key);
+    abstract void doBindInsertStatement(PreparedStatement st, DType dObj);
+    abstract void doBindUpdateStatement(PreparedStatement st, DType dObj);
+
     abstract IDType doGetId(ResultSet rs);
     abstract DType doLoad(ResultSet rs);
 
-    public AbstractDataMapper(DataSource ds){ _ds = ds; }
+    abstract boolean doInsertRequiresUpdate(DType dObj);
+
+    public AbstractDataMapper(){ _connector = null; }
+    public AbstractDataMapper(JdbcConnector connector){ 
+        _connector = connector;
+    }
+
+    @Override
+    public void setConnector (JdbcConnector connector) {
+        _connector = connector;
+    }
+
+    private <R> R connectorExec(JdbcAction<R> action) {
+        if (_connector == null) throw new IllegalStateException();
+        return _connector.exec(action);
+    }
+
 
     public Set<DType> cleanSet() { return _cleanObjects; }
     public Set<DType> dirtySet() { return _dirtyObjects; }
@@ -52,76 +73,136 @@ public abstract class AbstractDataMapper<IDType, DType>
         return val;
     }
 
-    public DType getById(IDType id) {
+    @Override
+    public DType getById(final IDType id) {
         DType val = _identityMap.get(id);
         if (val != null) return val;
-
-        Connection conn = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        try{
-            conn = _ds.getConnection();
-            st = conn.prepareStatement(doGetFindStatement());
-            doBindFindStatement(st, id);
-            rs = st.executeQuery();
-            if (!rs.next()) return null;
-            return load(rs);
-        }
-        catch (SQLException se){
-            throw new Serie3_DataMapperException();
-        }
-        finally{
-            try { conn.close(); }
-            catch (SQLException se) { throw new Serie3_DataMapperException(); }
-        }
-    }
-
-    public void loadAllInto(Collection<DType> col) {
-        Connection conn = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        try{
-            conn = _ds.getConnection();
-            st = conn.prepareStatement(doGetAllStatement());
-            rs = st.executeQuery();
-            DType elem;
-            while(rs.next()){
-                elem = load(rs);
-                col.add(elem);
+        return connectorExec(
+            new AbstractJdbcAction<DType>(doGetFindStatement()) {
+                @Override
+                public DType exec(PreparedStatement st) throws SQLException {
+                    doBindFindStatement(st, id);
+                    ResultSet rs = st.executeQuery();
+                    if (!rs.next()) return null;
+                    return load(rs);
+                }
             }
-        }
-        catch(SQLException se){
-            se.printStackTrace();
-            throw new Serie3_DataMapperException();
-        }
-        finally{
-            try { conn.close(); }
-            catch (SQLException se) { throw new Serie3_DataMapperException(); }
-        }
+        );
     }
 
-    public void loadFilteredInto(IFilter filter, Collection<DType> col){
-        Connection conn = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        try{
-            conn = _ds.getConnection();
-            st = conn.prepareStatement(doGetAllStatement() + filter.getWhereClause());
-            filter.bindValues(st);
-            rs = st.executeQuery();
-            DType elem;
-            while(rs.next()){
-                elem = load(rs);
-                col.add(elem);
+    @Override
+    public void loadAllInto(final Collection<DType> col) {
+        connectorExec(
+            new AbstractJdbcAction<DType>(doGetAllStatement()) {
+                @Override
+                public DType exec(PreparedStatement st) throws SQLException {
+                    ResultSet rs = st.executeQuery();
+                    DType elem;
+                    while(rs.next()){
+                        elem = load(rs);
+                        col.add(elem);
+                    }
+                    return null;
+                }
             }
-        }
-        catch(SQLException e){
-            throw new Serie3_DataMapperException();
-        }
-        finally{
-            try { conn.close(); }
-            catch (SQLException se) { throw new Serie3_DataMapperException(); }
+        );
+    }
+
+    @Override
+    public void loadFilteredInto(final IFilter filter, final Collection<DType> col){
+        connectorExec(
+            new AbstractJdbcAction<DType>(doGetAllStatement() + filter.getWhereClause()) {
+                @Override
+                public DType exec(PreparedStatement st) throws SQLException {
+                    filter.bindValues(st);
+                    ResultSet rs = st.executeQuery();
+                    DType elem;
+                    while(rs.next()){
+                        elem = load(rs);
+                        col.add(elem);
+                    }
+                    return null;
+                }
+            }
+        );
+    }
+
+    @Override
+    public void insertNewObjects() {
+        for(DType d : _newObjects){
+            insert(d);
         }
     }
 
+    @Override
+    public void insert(final DType dObj) {
+        connectorExec(
+            new AbstractJdbcAction<Void>(doGetInsertStatement(dObj),
+                    Statement.RETURN_GENERATED_KEYS){
+                @Override
+                public Void exec(PreparedStatement st) throws SQLException {
+                    doBindInsertStatement(st, dObj);
+                    st.executeUpdate();
+                    ResultSet rs = st.getGeneratedKeys();
+                    IDType key;
+                    if (!dObj.hasId()) {
+                        rs.next();
+                        key = doGetId(rs);
+                        dObj.setId(key);
+                    } else {
+                        key = dObj.getId();
+                    }
+                    _identityMap.put(key, dObj);
+                    dObj.saved();
+                    if(doInsertRequiresUpdate(dObj)) dObj.markDirty();
+                    return null;
+                }
+            }
+        );
+    }
+
+    @Override
+    public void deleteRemovedObjects() {
+        for(DType d : _removedObjects) {
+            delete(d);
+        }
+    }
+
+    @Override
+    public void delete(final DType dObj){
+        connectorExec(
+            new AbstractJdbcAction<Void>(doGetDeleteStatement()){
+                @Override
+                public Void exec(PreparedStatement st) throws SQLException {
+                    doBindDeleteStatement(st, dObj.getId());
+                    st.executeUpdate();
+                    _identityMap.remove(dObj.getId());
+                    dObj.saved();
+                    return null;
+                }
+            }
+        );
+    }
+
+    @Override
+    public void updateDirtyObjects() {
+        for (DType d : _dirtyObjects){
+            update(d);
+        }
+    }
+
+    @Override
+    public void update(final DType dObj){
+        connectorExec(
+            new AbstractJdbcAction<DType>(doGetUpdateStatement()) {
+                @Override
+                public DType exec(PreparedStatement st) throws SQLException {
+                    doBindUpdateStatement(st, dObj);
+                    st.executeUpdate();
+                    dObj.saved();
+                    return null;
+                }
+            }
+        );
+    }
 }

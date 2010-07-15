@@ -110,6 +110,7 @@ public class Order extends DomainObject<Integer, Order> {
         return this;
     }
 
+    @Override
     public String toString() {
         return "Order " + getId() + " - "
                 + getOrderDate() + "\n\t"

@@ -4,13 +4,13 @@ import exceptions.Serie3_DataMapperException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.sql.DataSource;
+import serie3.grupo1.dataConnector.JdbcConnector;
 import serie3.grupo1.domainObjects.Supplier;
 
 public class SupplierMapper extends AbstractDataMapper<Integer, Supplier> {
 
-    public SupplierMapper(DataSource ds) {
-        super(ds);
+    public SupplierMapper(JdbcConnector connector) {
+        super(connector);
     }
 
     @Override
@@ -25,9 +25,34 @@ public class SupplierMapper extends AbstractDataMapper<Integer, Supplier> {
     }
 
     @Override
+    void doBindFindStatement(PreparedStatement st, Integer key) {
+        try {
+            st.setInt(1, key);
+        } catch (SQLException e) {
+            throw new Serie3_DataMapperException();
+        }
+    }
+
+    @Override
+    boolean doInsertRequiresUpdate(Supplier s) { return false; }
+
+    @Override
     String doGetInsertStatement(Supplier s) {
         return "insert into Suppliers (contactName, companyName, city, country, " +
                 "phone) values (?, ?, ?, ?, ?)";
+    }
+
+    @Override
+    void doBindInsertStatement(PreparedStatement st, Supplier s) {
+        try {
+            st.setString(1, s.getContactName());
+            st.setString(2, s.getCompanyName());
+            st.setString(3, s.getCity());
+            st.setString(4, s.getCountry());
+            st.setString(5, s.getPhone());
+        } catch (SQLException e) {
+            throw new Serie3_DataMapperException();
+        }
     }
 
     @Override
@@ -37,12 +62,26 @@ public class SupplierMapper extends AbstractDataMapper<Integer, Supplier> {
     }
 
     @Override
+    void doBindUpdateStatement(PreparedStatement st, Supplier s) {
+        try {
+            st.setString(1, s.getContactName());
+            st.setString(2, s.getCompanyName());
+            st.setString(3, s.getCity());
+            st.setString(4, s.getCountry());
+            st.setString(5, s.getPhone());
+            st.setInt(6, s.getId());
+        } catch (SQLException e) {
+            throw new Serie3_DataMapperException();
+        }
+    }
+
+    @Override
     String doGetDeleteStatement() {
         return "delete from Suppliers where supplierId = ?";
     }
 
     @Override
-    void doBindFindStatement(PreparedStatement st, Integer key) {
+    void doBindDeleteStatement(PreparedStatement st, Integer key) {
         try {
             st.setInt(1, key);
         } catch (SQLException e) {

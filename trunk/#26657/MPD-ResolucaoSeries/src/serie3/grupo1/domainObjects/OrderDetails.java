@@ -6,6 +6,7 @@ import serie3.grupo1.dataMappers.IDataMapper;
 import serie3.grupo1.dataMappers.registry.MapperRegistry;
 import serie3.grupo1.domainObjects.primaryKeys.PkOrderDetails;
 import serie3.grupo1.domainObjects.lazyLoaders.IValueHolder;
+import serie3.grupo1.domainObjects.lazyLoaders.ValueHolder;
 
 public class OrderDetails extends DomainObject<PkOrderDetails, OrderDetails>{
 
@@ -16,20 +17,34 @@ public class OrderDetails extends DomainObject<PkOrderDetails, OrderDetails>{
     private IValueHolder<Integer,Order> _order;
 
 
-    public OrderDetails(PkOrderDetails id, IValueHolder<Integer,Product> product,
-            IValueHolder<Integer,Order> order, double unitPrice,
-            int quantity, double discount, boolean isNew) {
-        super(id, isNew);
-        bindConstructorValues(product, order, unitPrice, quantity, discount);
-        System.out.println("OrderDetail (Order:" + id.getOrderId() +
-                "/Product:" + id.getProductId() + ") loaded!");
-    }
-
-    public OrderDetails(PkOrderDetails id, IValueHolder<Integer,Product> product,
+    public OrderDetails(IValueHolder<Integer,Product> product,
             IValueHolder<Integer,Order> order, double unitPrice,
             int quantity, double discount) {
-        super(id, true);
+        super(new PkOrderDetails(order.getKey(),product.getKey()));
         bindConstructorValues(product, order, unitPrice, quantity, discount);
+        System.out.println("OrderDetail (Order:" + order.getKey() +
+                "/Product:" + product.getKey() + ") loaded!");
+    }
+
+    public OrderDetails(Order order, Product product, double unitPrice,
+            int quantity, double discount) {
+        super();
+
+        _unitPrice = unitPrice;
+        _quantity = quantity;
+        _discount = discount;
+        if (product.hasId()) {
+            _product = new ValueHolder<Integer,Product>(product.getId(), product.mapper());
+        } else {
+            _product = new ValueHolder<Integer,Product>(product);
+        }
+        if (order.hasId()) {
+            _order = new ValueHolder<Integer,Order>(order.getId(), order.mapper());
+        } else {
+            _order = new ValueHolder<Integer,Order>(order);
+        }
+        if (order.hasId() && product.hasId())
+            setId(new PkOrderDetails(order.getId(), product.getId()));
     }
 
     private void bindConstructorValues(IValueHolder<Integer,Product> product,
@@ -91,7 +106,7 @@ public class OrderDetails extends DomainObject<PkOrderDetails, OrderDetails>{
         return this;
     }
 
-     @Override
+    @Override
     public String toString(){
         return "OrderDetail " + getId().getOrderId() + "/" + getId().getProductId() +
                 ": UnitPrice=" + getUnitPrice() + "\tQuantity=" + getQuantity();
