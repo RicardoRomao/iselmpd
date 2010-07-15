@@ -72,12 +72,6 @@ public class Customer extends DomainObject<String, Customer> {
     }
 
     @Override
-    public String toString(){
-        return "Customer ID:" + getId() + "\tName:" + getContactName() +
-                "\tCountry:" + getCountry();
-    }
-
-    @Override
     protected IDataMapper<String, Customer> mapper() {
         return MapperRegistry.current().get(this.getClass());
     }
@@ -87,4 +81,9 @@ public class Customer extends DomainObject<String, Customer> {
         return this;
     }
     
+    @Override
+    public String toString(){
+        return "Customer ID:" + getId() + "\tName:" + getContactName() +
+                "\tCountry:" + getCountry();
+    }
 }

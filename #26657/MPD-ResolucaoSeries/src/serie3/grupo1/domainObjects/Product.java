@@ -5,7 +5,6 @@ import annotations.VisibleProperty.PropertyKind;
 import serie3.grupo1.dataMappers.IDataMapper;
 import serie3.grupo1.domainObjects.primaryKeys.PkOrderDetails;
 import serie3.grupo1.domainObjects.lazyLoaders.IValueHolder;
-import java.sql.SQLException;
 import java.util.Set;
 import serie3.grupo1.dataMappers.filters.FilterByProduct;
 import serie3.grupo1.dataMappers.registry.MapperRegistry;
@@ -70,7 +69,7 @@ public class Product extends DomainObject<Integer, Product>{
     }
 
      @VisibleProperty(name="Supplier", kind = PropertyKind.Complex)
-    public Supplier getSupplier() throws SQLException { return _supplier.get(); }
+    public Supplier getSupplier() { return _supplier.get(); }
     public void setSupplier(IValueHolder<Integer, Supplier> supplier) {
         markDirty();
         _supplier = supplier;

@@ -2,12 +2,12 @@ package serie3.grupo1.domainObjects;
 
 import serie3.grupo1.dataMappers.IDataMapper;
 
-public abstract class DomainObject<IDType, DType> {
+public abstract class DomainObject<IDType, DType extends DomainObject<IDType, DType>> {
 
     private IDType _id;
     private State _state;
 
-    protected abstract IDataMapper<IDType,DType> mapper();
+    protected abstract IDataMapper mapper();
     protected abstract DType self();
 
     public DomainObject() {
@@ -25,7 +25,7 @@ public abstract class DomainObject<IDType, DType> {
     }
 
     public IDType getId() { return _id; }
-    public void SetId(IDType id) { _id = id; }
+    public void setId(IDType id) { _id = id; }
     public boolean hasId() { return _id != null; }
 
     protected interface State {
@@ -65,8 +65,8 @@ public abstract class DomainObject<IDType, DType> {
         public State onSave() { throw new IllegalStateException(); }
     }
 
-    protected void markDirty() { _state = _state.onWrite(); }
-    protected void saved() { _state = _state.onSave(); }
-    protected void remove() { _state = _state.onRemove(); }
+    public void markDirty() { _state = _state.onWrite(); }
+    public void saved() { _state = _state.onSave(); }
+    public void remove() { _state = _state.onRemove(); }
 
 }

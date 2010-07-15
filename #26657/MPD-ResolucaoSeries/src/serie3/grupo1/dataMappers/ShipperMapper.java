@@ -4,13 +4,13 @@ import exceptions.Serie3_DataMapperException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.sql.DataSource;
+import serie3.grupo1.dataConnector.JdbcConnector;
 import serie3.grupo1.domainObjects.Shipper;
 
 public class ShipperMapper extends AbstractDataMapper<Integer,Shipper>{
 
-    public ShipperMapper(DataSource ds){
-        super(ds);
+    public ShipperMapper(JdbcConnector connector){
+        super(connector);
     }
 
     @Override
@@ -24,8 +24,32 @@ public class ShipperMapper extends AbstractDataMapper<Integer,Shipper>{
     }
 
     @Override
+    void doBindFindStatement(PreparedStatement st, Integer key) {
+        try {
+            st.setInt(1, key);
+        }
+        catch(SQLException e) {
+            throw new Serie3_DataMapperException();
+        }
+    }
+
+    @Override
+    boolean doInsertRequiresUpdate(Shipper s) { return false; }
+
+    @Override
     String doGetInsertStatement(Shipper s) {
         return "insert into Shippers (companyName, phone) values (?, ?)";
+    }
+
+    @Override
+    void doBindInsertStatement(PreparedStatement st, Shipper s) {
+        try {
+            st.setString(1, s.getCompanyName());
+            st.setString(2, s.getPhone());
+        }
+        catch(SQLException e) {
+            throw new Serie3_DataMapperException();
+        }
     }
 
     @Override
@@ -34,12 +58,24 @@ public class ShipperMapper extends AbstractDataMapper<Integer,Shipper>{
     }
 
     @Override
+    void doBindUpdateStatement(PreparedStatement st, Shipper s) {
+        try {
+            st.setString(1, s.getCompanyName());
+            st.setString(2, s.getPhone());
+            st.setInt(3,s.getId());
+        }
+        catch(SQLException e) {
+            throw new Serie3_DataMapperException();
+        }
+    }
+
+    @Override
     String doGetDeleteStatement() {
         return "delete from Shippers where shipperId = ?";
     }
 
     @Override
-    void doBindFindStatement(PreparedStatement st, Integer key) {
+    void doBindDeleteStatement(PreparedStatement st, Integer key) {
         try {
             st.setInt(1, key);
         }

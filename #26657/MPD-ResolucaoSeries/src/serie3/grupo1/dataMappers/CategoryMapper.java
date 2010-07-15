@@ -4,18 +4,18 @@ import exceptions.Serie3_DataMapperException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.sql.DataSource;
+import serie3.grupo1.dataConnector.JdbcConnector;
 import serie3.grupo1.domainObjects.Category;
 
 public class CategoryMapper extends AbstractDataMapper<Integer, Category> {
 
-    public CategoryMapper(DataSource ds) {
-        super(ds);
+    public CategoryMapper(JdbcConnector connector) {
+        super(connector);
     }
 
     @Override
     String doGetAllStatement() {
-        return "select categoryId, categoryName, description from Categories ";
+        return "select categoryId, categoryName, description from Categories";
     }
 
     @Override
@@ -24,9 +24,31 @@ public class CategoryMapper extends AbstractDataMapper<Integer, Category> {
     }
 
     @Override
+    void doBindFindStatement(PreparedStatement st, Integer key) {
+        try {
+            st.setInt(1, key);
+        } catch (SQLException e) {
+            throw new Serie3_DataMapperException();
+        }
+    }
+
+    @Override
+    boolean doInsertRequiresUpdate(Category c) { return false; }
+
+    @Override
     String doGetInsertStatement(Category c) {
         return "insert into Categories (CategoryName, Description)" +
                 " values (?,?)";
+    }
+
+    @Override
+    void doBindInsertStatement(PreparedStatement st, Category c){
+        try{
+            st.setString(1, c.getCategoryName());
+            st.setString(2, c.getDescription());
+        } catch (SQLException e) {
+            throw new Serie3_DataMapperException();
+        }
     }
 
     @Override
@@ -36,13 +58,24 @@ public class CategoryMapper extends AbstractDataMapper<Integer, Category> {
     }
 
     @Override
-    String doGetDeleteStatement() {
-        return "delete from Categories where CategoryID=?";
+    void doBindUpdateStatement(PreparedStatement st, Category c) {
+        try {
+            st.setString(1, c.getCategoryName());
+            st.setString(2, c.getDescription());
+            st.setInt(3, c.getId());
+        } catch (SQLException e) {
+            throw new Serie3_DataMapperException();
+        }
     }
 
     @Override
-    void doBindFindStatement(PreparedStatement st, Integer key) {
-        try {
+    String doGetDeleteStatement() {
+        return "delete from Categories where CategoryID = ?";
+    }
+
+    @Override
+    void doBindDeleteStatement(PreparedStatement st, Integer key){
+        try{
             st.setInt(1, key);
         } catch (SQLException e) {
             throw new Serie3_DataMapperException();
@@ -71,4 +104,5 @@ public class CategoryMapper extends AbstractDataMapper<Integer, Category> {
             throw new Serie3_DataMapperException();
         }
     }
+
 }

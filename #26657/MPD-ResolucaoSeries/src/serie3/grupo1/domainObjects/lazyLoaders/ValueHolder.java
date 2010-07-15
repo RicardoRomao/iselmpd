@@ -1,7 +1,5 @@
 package serie3.grupo1.domainObjects.lazyLoaders;
 
-import exceptions.Serie3_ValueHolderException;
-import java.sql.SQLException;
 import serie3.grupo1.dataMappers.IDataMapper;
 import serie3.grupo1.domainObjects.DomainObject;
 
@@ -19,10 +17,11 @@ public class ValueHolder<IDType, DType extends DomainObject<IDType, DType>>
         _mapper = mapper;
     }
 
-    public ValueHolder(){
+    public ValueHolder(DType value){
         _loaded = true;
         _key = null;
         _mapper = null;
+        _value = value;
     }
 
     public DType get() {
