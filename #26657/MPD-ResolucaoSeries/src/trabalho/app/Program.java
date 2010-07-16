@@ -12,6 +12,7 @@ import trabalho.misc.GridViewModel;
 import trabalho.misc.GridViewModelAdapter;
 import trabalho.misc.RemoveAction;
 import trabalho.view.GridView;
+import trabalho.view.GridViewEditor;
 
 public class Program {
 
@@ -37,9 +38,10 @@ public class Program {
         //TableModelAdapter<Product> products = new TableModelAdapter<Product>();
         GridViewModelAdapter<Product> products = new GridViewModelAdapter<Product>();
         fillProducts(products);
-        GridView view = new GridView(products);
-        view.addGridViewAction(new RemoveAction(products));
-        view.addGridViewAction(new AddAction(products));
+        //GridView view = new GridView(products);
+        //view.addGridViewAction(new RemoveAction(products));
+        //view.addGridViewAction(new AddAction(products));
+	GridViewEditor view = new GridViewEditor(products);
         launchDialog(view, true, "Products");
     }
 
