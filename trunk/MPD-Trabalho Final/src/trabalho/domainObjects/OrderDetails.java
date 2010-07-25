@@ -1,10 +1,10 @@
 package trabalho.domainObjects;
 
 import annotations.VisibleProperty;
-import annotations.VisibleProperty.PropertyKind;
 import trabalho.domainObjects.primaryKeys.PkOrderDetails;
 import trabalho.domainObjects.lazyLoaders.IValueHolder;
 import trabalho.domainObjects.lazyLoaders.ValueHolder;
+import trabalho.propertiesUtils.PropertyKind;
 
 public class OrderDetails extends DomainObject<PkOrderDetails, OrderDetails>{
 
@@ -36,12 +36,12 @@ public class OrderDetails extends DomainObject<PkOrderDetails, OrderDetails>{
         _quantity = quantity;
         _discount = discount;
         if (product.hasId()) {
-            _product = new ValueHolder<Integer,Product>(product.getId(), product.mapper());
+            setProduct(product);
         } else {
             _product = new ValueHolder<Integer,Product>(product);
         }
         if (order.hasId()) {
-            _order = new ValueHolder<Integer,Order>(order.getId(), order.mapper());
+            setOrder(order);
         } else {
             _order = new ValueHolder<Integer,Order>(order);
         }
@@ -74,18 +74,18 @@ public class OrderDetails extends DomainObject<PkOrderDetails, OrderDetails>{
     public Integer getProductId() { return _product.getKey(); }
     @VisibleProperty(name="Product", kind = PropertyKind.Complex)
     public Product getProduct() { return _product.get(); }
-    public void setProduct(IValueHolder<Integer,Product> product){
+    public void setProduct(Product product){
         markDirty();
-        _product = product;
+        _product = new ValueHolder<Integer,Product>(product.getId(), product.mapper());
     }
 
     @VisibleProperty(name="Order ID", kind = PropertyKind.Simple)
     public Integer getOrderId() { return _order.getKey(); }
     @VisibleProperty(name="Order", kind = PropertyKind.Complex)
     public Order getOrder() { return _order.get(); }
-    public void setOrder(IValueHolder<Integer,Order> order){
+    public void setOrder(Order order){
         markDirty();
-        _order = order;
+        _order = new ValueHolder<Integer,Order>(order.getId(), order.mapper());
     }
 
     @Override

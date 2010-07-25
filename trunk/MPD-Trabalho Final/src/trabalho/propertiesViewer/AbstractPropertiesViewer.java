@@ -15,7 +15,6 @@ import trabalho.propertySetter.IPropertySetter;
 public abstract class AbstractPropertiesViewer<T> extends JComponent
         implements IPropertiesViewer<T> {
 
-    final JButton _updateBtn;
     final JComponent _propsForm;
     final T _obj;
     final Hashtable<String, PropertyMembers> _properties;
@@ -23,29 +22,13 @@ public abstract class AbstractPropertiesViewer<T> extends JComponent
     public AbstractPropertiesViewer(T t){
         _obj = t;
         _properties = new Hashtable<String, PropertyMembers>();
-        _updateBtn = new JButton("Update");
-        _updateBtn.setVisible(false);
         _propsForm = new JPanel(new FormLayout());
         setLayout(new BorderLayout());
         doPopulatePropsForm();
         add(_propsForm,BorderLayout.CENTER);
-        add(_updateBtn,BorderLayout.SOUTH);
     }
 
     public abstract void doPopulatePropsForm();
-
-    public void addUpdateListener(ActionListener listener) {
-        _updateBtn.setVisible(true);
-        _updateBtn.addActionListener(listener);
-    }
-
-    public void addPropertySetter(String propName, IPropertySetter<T> setter) {
-        try {
-            _properties.get(propName).editEnable(setter);
-        } catch (NullPointerException ex) {
-            throw new PropertiesViewerException();
-        }
-    }
 
     class PropertyMembers implements ActionListener {
 

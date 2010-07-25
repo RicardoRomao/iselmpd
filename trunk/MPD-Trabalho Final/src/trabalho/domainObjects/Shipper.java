@@ -1,7 +1,7 @@
 package trabalho.domainObjects;
 
 import annotations.VisibleProperty;
-import annotations.VisibleProperty.PropertyKind;
+import trabalho.propertiesUtils.PropertyKind;
 
 public class Shipper extends DomainObject<Integer, Shipper>{
 
