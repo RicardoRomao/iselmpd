@@ -1,6 +1,5 @@
 package trabalho.propertiesViewer;
 
-import annotations.VisibleProperty.PropertyKind;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
@@ -10,20 +9,21 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Map;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import trabalho.propertiesUtils.PropertiesUtils;
 import trabalho.propertiesUtils.PropertyInfo;
 import trabalho.listModel.SimpleListViewModel;
 import trabalho.listView.ListView;
+import trabalho.propertiesUtils.PropertyKind;
 
 import utils.Utils;
 
-public class PropertiesViewer<T> extends AbstractPropertiesViewer<T> {
+public class PropertiesViewer<T> extends AbstractPropertiesForm<T> {
 
     public PropertiesViewer(T t) {
         super(t);
+        doPopulatePropsForm();
     }
 
     public void doPopulatePropsForm() {
@@ -34,20 +34,20 @@ public class PropertiesViewer<T> extends AbstractPropertiesViewer<T> {
         String key;
         PropertyKind kind;
 
-        for (Map.Entry<String, PropertyInfo> _entry : props.entrySet()) {
-            key = _entry.getKey();
-            kind = _entry.getValue().getKind();
-            _propLabel = customLabel(key);
+        for (Map.Entry<String, PropertyInfo> entry : props.entrySet()) {
+            key = entry.getKey();
+            kind = entry.getValue().getKind();
+            _propLabel = getLabel(key);
             _propsForm.add(_propLabel);
 
             if (kind == PropertyKind.Simple) {
-                _propField = customTextField(_entry.getValue().getValue().toString());
+                _propField = getTextField(entry.getValue().getValue().toString());
                 _properties.put(key, new PropertyMembers(_propField));
                 _propsForm.add(_propField);
             } else if (kind == PropertyKind.Complex) {
-                _propsForm.add(getDetailsButton(key,_entry.getValue().getMethod()));
+                _propsForm.add(getDetailsButton(key,entry.getValue().getMethod()));
             } else if (kind == PropertyKind.List) {
-                _propsForm.add(getListButton(key,_entry.getValue().getMethod()));
+                _propsForm.add(getListButton(key,entry.getValue().getMethod()));
             }
 
         }
@@ -67,11 +67,7 @@ public class PropertiesViewer<T> extends AbstractPropertiesViewer<T> {
                 } catch (InvocationTargetException ex) {
                     Logger.getLogger(PropertiesViewer.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-                JFrame frame = new JFrame(title);
-                frame.add(_propView);
-                frame.setVisible(true);
-                frame.pack();
+                Utils.launchFrame(_propView, title);
             }
         });
         return detailsButton;
@@ -93,23 +89,9 @@ public class PropertiesViewer<T> extends AbstractPropertiesViewer<T> {
                 }
 
                 ListView view = new ListView(listModel);
-                Utils.launchDialog(view, true, "Customers");
+                Utils.launchDialog(view, true, title);
             }
         });
         return listButton;
-    }
-
-    private JTextField customTextField(String value) {
-        JTextField _field = new JTextField(value);
-        _field.setName(value);
-        _field.setColumns(15);
-        _field.setEnabled(false);
-        return _field;
-    }
-
-    private JLabel customLabel(String value) {
-        JLabel _label = new JLabel(value);
-        _label.setSize(20, 1);
-        return _label;
     }
 }

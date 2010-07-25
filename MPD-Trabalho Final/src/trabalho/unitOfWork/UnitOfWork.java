@@ -18,13 +18,16 @@ public class UnitOfWork {
     }
 
     public void save() {
+        System.out.println("Saving UOW...");
         try {
+            _connector.beginTransaction();
             for (IDataMapper m : _mappers.getAllMappersInReverse())
                 m.deleteRemovedObjects();
             for (IDataMapper m : _mappers.getAllMappers())
                 m.insertNewObjects();
             for (IDataMapper m : _mappers.getAllMappers())
                 m.updateDirtyObjects();
+            _connector.commitTransaction();
         } catch (Exception e) { e.printStackTrace();}
     }
 

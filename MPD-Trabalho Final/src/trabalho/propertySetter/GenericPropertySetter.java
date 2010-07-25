@@ -6,6 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import trabalho.domainObjects.DomainObject;
+import trabalho.propertiesUtils.PropertyKind;
 
 public class GenericPropertySetter<T> implements IPropertySetter<T> {
 
@@ -15,13 +17,11 @@ public class GenericPropertySetter<T> implements IPropertySetter<T> {
     public GenericPropertySetter(String propName, Class<?> propClass) {
         _propName = propName;
         _propClass = propClass;
-
     }
 
-    public void setValue(T obj, String newValue) {
+    public void setValue(T obj, Object newValue) {
 
         try {
-
             Method[] methods = obj.getClass().getMethods();
             for (Method m : methods) {
                 if (m.isAnnotationPresent(VisibleProperty.class)
@@ -29,12 +29,16 @@ public class GenericPropertySetter<T> implements IPropertySetter<T> {
                     VisibleProperty v = m.getAnnotation(VisibleProperty.class);
                     if (v.name().equals(_propName)) {
                         System.out.println("Invoking method " + m.getName());
-                        if (_propClass == String.class) {
-                            m.invoke(obj, newValue);
+                        if (v.kind() == PropertyKind.Simple) {
+                            if (_propClass == String.class) {
+                                m.invoke(obj, newValue);
+                            } else {
+                                Method valueMethod;
+                                valueMethod = _propClass.getMethod("valueOf", String.class);
+                                m.invoke(obj, valueMethod.invoke(obj, newValue));
+                            }
                         } else {
-                            Method valueMethod;
-                            valueMethod = _propClass.getMethod("valueOf", String.class);
-                            m.invoke(obj, valueMethod.invoke(obj, newValue));
+                            m.invoke(obj, (DomainObject)newValue);
                         }
                     }
                 }

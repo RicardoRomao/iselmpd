@@ -3,10 +3,10 @@ package trabalho.domainObjects;
 import java.util.Calendar;
 import java.util.Set;
 import annotations.VisibleProperty;
-import annotations.VisibleProperty.PropertyKind;
 import trabalho.dataMappers.filters.FilterByOrder;
 import trabalho.domainObjects.primaryKeys.PkOrderDetails;
 import trabalho.domainObjects.lazyLoaders.*;
+import trabalho.propertiesUtils.PropertyKind;
 
 public class Order extends DomainObject<Integer, Order> {
 
