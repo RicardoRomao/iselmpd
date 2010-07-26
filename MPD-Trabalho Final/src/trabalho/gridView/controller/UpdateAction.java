@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import trabalho.gridModel.GridViewModelAdapter;
 import trabalho.propertiesViewer.PropertiesEditor;
-import trabalho.propertiesViewer.PropertiesViewer;
+import trabalho.unitOfWork.UnitOfWork;
 
 import utils.Utils;
 
@@ -23,6 +23,8 @@ public class UpdateAction implements IGridViewAction {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 model.setValueAt(obj, arg[0], 0);
+                if (UnitOfWork.getCurrent() != null)
+                    UnitOfWork.getCurrent().save();
             }
         });
         Utils.launchDialog(pedit, true, "Update");

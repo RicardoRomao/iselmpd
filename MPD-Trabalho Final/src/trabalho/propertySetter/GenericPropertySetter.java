@@ -4,8 +4,6 @@ import annotations.VisibleProperty;
 import exceptions.GenericPropSetException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import trabalho.domainObjects.DomainObject;
 import trabalho.propertiesUtils.PropertyKind;
 
@@ -44,9 +42,9 @@ public class GenericPropertySetter<T> implements IPropertySetter<T> {
                 }
             }
         } catch (NoSuchMethodException ex) {
-            Logger.getLogger(GenericPropertySetter.class.getName()).log(Level.SEVERE, null, ex);
+            throw new GenericPropSetException();
         } catch (SecurityException ex) {
-            Logger.getLogger(GenericPropertySetter.class.getName()).log(Level.SEVERE, null, ex);
+            throw new GenericPropSetException();
         } catch (IllegalAccessException ex) {
             throw new GenericPropSetException();
         } catch (InvocationTargetException ex) {

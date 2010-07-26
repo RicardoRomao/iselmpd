@@ -2,11 +2,10 @@ package trabalho.dataMappers;
 
 import trabalho.dataMappers.registry.MapperRegistry;
 import exceptions.Serie3_DataMapperException;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
+import java.util.Date;
 import trabalho.jdbc.JdbcConnector;
 import trabalho.dataMappers.filters.FilterByOrder;
 import trabalho.domainObjects.Customer;
@@ -76,7 +75,7 @@ public class OrderMapper extends AbstractDataMapper<Integer, Order> {
     @Override
     void doBindInsertStatement(PreparedStatement st, Order o) {
         try {
-            st.setDate(1, new Date(o.getOrderDate().getTimeInMillis()));
+            st.setDate(1, new java.sql.Date(new Date(Date.parse(o.getOrderDate())).getTime()));
             st.setString(2, o.getShipAddress());
             st.setString(3, o.getShipName());
             if (doInsertRequiresUpdate(o)){
@@ -114,7 +113,7 @@ public class OrderMapper extends AbstractDataMapper<Integer, Order> {
     @Override
     void doBindUpdateStatement(PreparedStatement st, Order o) {
         try {
-            st.setDate(1, new Date(o.getOrderDate().getTimeInMillis()));
+            st.setDate(1, new java.sql.Date(new Date(Date.parse(o.getOrderDate())).getTime()));
             st.setString(2, o.getShipAddress());
             st.setString(3, o.getShipName());
             if (o.getCustomer() != null) {
@@ -159,14 +158,15 @@ public class OrderMapper extends AbstractDataMapper<Integer, Order> {
     @Override
     Order doLoad(ResultSet rs) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(rs.getDate(3));
+            Date date = new Date();
+            date.setTime(rs.getDate(3).getTime());
+            date.toString();
             Order o = new Order(rs.getInt(1),
                 new ValueHolder(
                     rs.getString(2),
                     (IDataMapper<String, Customer>) MapperRegistry.current().get(Customer.class)
                 ),
-                calendar,
+                date,
                 rs.getString(4),
                 rs.getString(5),
                 new ValueHolder(

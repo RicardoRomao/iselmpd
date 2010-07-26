@@ -32,22 +32,24 @@ public class PropertiesViewer<T> extends AbstractPropertiesForm<T> {
         JLabel _propLabel;
 
         String key;
+        PropertyInfo value;
         PropertyKind kind;
 
         for (Map.Entry<String, PropertyInfo> entry : props.entrySet()) {
             key = entry.getKey();
-            kind = entry.getValue().getKind();
+            value = entry.getValue();
+            kind = value.getKind();
             _propLabel = getLabel(key);
             _propsForm.add(_propLabel);
 
             if (kind == PropertyKind.Simple) {
-                _propField = getTextField(entry.getValue().getValue().toString());
+                _propField = getTextField(value.getValue() == null ? "" : value.getValue().toString());
                 _properties.put(key, new PropertyMembers(_propField));
                 _propsForm.add(_propField);
             } else if (kind == PropertyKind.Complex) {
-                _propsForm.add(getDetailsButton(key,entry.getValue().getMethod()));
+                _propsForm.add(getDetailsButton(key,value.getMethod()));
             } else if (kind == PropertyKind.List) {
-                _propsForm.add(getListButton(key,entry.getValue().getMethod()));
+                _propsForm.add(getListButton(key,value.getMethod()));
             }
 
         }
