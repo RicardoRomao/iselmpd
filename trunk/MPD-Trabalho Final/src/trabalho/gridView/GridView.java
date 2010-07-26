@@ -12,7 +12,10 @@ import trabalho.gridView.controller.IGridViewAction;
 @SuppressWarnings("serial")
 public class GridView extends JPanel {
 
-    public GridView(TableModel model) {
+    private final Class<?> _genericClass;
+    
+    public GridView(TableModel model, Class<?> klass) {
+        _genericClass = klass;
         setLayout(new BorderLayout());
         south = new JPanel();
         add(south, BorderLayout.SOUTH);
@@ -32,6 +35,9 @@ public class GridView extends JPanel {
             }
         });
     }
+
+    public Class<?> getGenericClass() { return _genericClass; }
+
     private JTable tblItens;
     private JPanel south;
 }

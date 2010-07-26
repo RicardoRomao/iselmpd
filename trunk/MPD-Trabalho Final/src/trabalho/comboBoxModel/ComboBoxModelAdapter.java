@@ -13,8 +13,13 @@ public class ComboBoxModelAdapter<T> implements ComboBoxModel, List<T> {
     private LinkedList<T> _elems = new LinkedList<T>();
     private int _selected;
 
+    @SuppressWarnings("element-type-mismatch")
     public void setSelectedItem(Object anItem) {
-        _selected = _elems.indexOf(anItem);
+        if (_elems.contains(anItem))
+            _selected = _elems.indexOf(anItem);
+        else
+            _selected = 0;
+
     }
 
     public Object getSelectedItem() {

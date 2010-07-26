@@ -12,8 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import trabalho.propertySetter.IPropertySetter;
 
-public abstract class AbstractPropertiesForm<T> extends JComponent
-        implements IPropertiesForm<T> {
+public abstract class AbstractPropertiesForm<T> extends JComponent {
 
     class PropertyMembers implements ActionListener {
 
@@ -50,7 +49,6 @@ public abstract class AbstractPropertiesForm<T> extends JComponent
     final Hashtable<String, PropertyMembers> _properties;
 
     public AbstractPropertiesForm(T t){
-
         _obj = t;
         _properties = new Hashtable<String, PropertyMembers>();
         _propsForm = new JPanel(new FormLayout());

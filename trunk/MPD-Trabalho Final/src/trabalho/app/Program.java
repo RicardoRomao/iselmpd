@@ -1,7 +1,11 @@
 package trabalho.app;
 
+import java.util.Calendar;
+import java.util.Locale;
+import trabalho.dataMappers.OrderMapper;
 import trabalho.dataMappers.ProductMapper;
 import trabalho.dataMappers.registry.MapperRegistry;
+import trabalho.domainObjects.Order;
 import trabalho.domainObjects.Product;
 import trabalho.jdbc.JdbcConnector;
 import trabalho.jdbc.JdbcDataSource;
@@ -20,24 +24,22 @@ public class Program {
         UnitOfWork uow = new UnitOfWork(new JdbcConnector(JdbcDataSource.getDataSource()));
         UnitOfWork.setCurrent(uow);
         
-        ProductMapper pMapper = 
+        OrderMapper oMapper =
+                (OrderMapper) MapperRegistry.current().get(Order.class);
+        ProductMapper pMapper =
                 (ProductMapper) MapperRegistry.current().get(Product.class);
 
         SimpleListViewModel listModel = new SimpleListViewModel();
-        pMapper.loadAllInto(listModel);
+        oMapper.loadAllInto(listModel);
 
         ListView lView = new ListView(listModel);
-        //lView.addListViewAction(new UpdateAction(listModel));
 
-        TableModelAdapter gridModel = new TableModelAdapter(Product.class);
-        pMapper.loadAllInto(gridModel);
+        TableModelAdapter gridModel = new TableModelAdapter(Order.class);
+        oMapper.loadAllInto(gridModel);
 
         GridViewModelAdapter gridModelA = new GridViewModelAdapter(gridModel);
 
-        GridViewEditor gView = new GridViewEditor(gridModelA);
-        //gView.addGridViewAction(new UpdateAction(gridModel));
-        
-        Utils.launchDialog(gView, true, "Product List");
-        //Utils.launchDialog(lView, true, "Product List");
+        GridViewEditor gView = new GridViewEditor(gridModelA,Order.class);
+        Utils.launchDialog(gView, true, "Order List");
     }
 }

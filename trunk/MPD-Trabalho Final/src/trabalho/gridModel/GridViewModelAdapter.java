@@ -20,6 +20,9 @@ public class GridViewModelAdapter<V> implements GridViewModel<V> {
     private Map<String, Method> _properties = null;
     private final List<V> _elems;
     private final List<TableModelListener> _listeners;
+    public List<V> listed = new LinkedList<V>();
+
+    public GridViewModelAdapter() { this(null); }
 
     public GridViewModelAdapter(Collection<V> col) {
         _listeners = new LinkedList<TableModelListener>();
@@ -100,8 +103,6 @@ public class GridViewModelAdapter<V> implements GridViewModel<V> {
             }
         }
         return obj;
-        //return _elems.get(row);
-
     }
 
     @Override
@@ -125,4 +126,7 @@ public class GridViewModelAdapter<V> implements GridViewModel<V> {
     public V get(int index){
         return _elems.get(index);
     }
+
+    public int indexOf(V e) { return _elems.indexOf(e); }
+
 }

@@ -12,6 +12,7 @@ public abstract class DomainObject<IDType, DType extends DomainObject<IDType, DT
     protected abstract DType self();
 
     public DomainObject() {
+        _id = null;
         _state = new New();
     }
 
