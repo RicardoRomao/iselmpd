@@ -1,28 +1,27 @@
 package trabalho.gridView.controller;
 
+import trabalho.domainObjects.DomainObject;
 import trabalho.gridModel.GridViewModel;
-import trabalho.gridModel.GridViewModelAdapter;
+import trabalho.unitOfWork.UnitOfWork;
 
-public class RemoveAction implements IGridViewAction {
+public class RemoveAction<V extends DomainObject> implements IGridViewAction {
 
-    @SuppressWarnings("unchecked")
-    private final GridViewModelAdapter model;
+    private final GridViewModel<V> _model;
 
-    @SuppressWarnings("unchecked")
-    public RemoveAction(GridViewModel model) {
-        this.model = (GridViewModelAdapter) model;
+    public RemoveAction(GridViewModel<V> model) {
+        this._model = model;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void actionPerformed(int[] arg) {
         for (int i = arg.length - 1; i >= 0; i--) {
-            model.remove(model.get(arg[i]));
+            _model.get(arg[i]).remove();
+            _model.remove(_model.get(arg[i]));
         }
+        if (UnitOfWork.getCurrent() != null)
+            UnitOfWork.getCurrent().save();
     }
 
     @Override
-    public String getName() {
-        return "Remove";
-    }
+    public String getName() { return "Remove"; }
 }

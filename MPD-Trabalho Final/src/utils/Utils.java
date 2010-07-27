@@ -2,8 +2,6 @@ package utils;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog.ModalExclusionType;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;

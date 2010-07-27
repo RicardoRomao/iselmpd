@@ -24,9 +24,8 @@ public class UpdateAction implements IListViewAction{
         for (final int idx : arg.indices) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-
-                    PropertiesEditor<Product> prodEdit =
-                        new PropertiesEditor(_model.get(idx),new ActionListener() {
+                    PropertiesEditor<Product> prodEdit = new PropertiesEditor(_model.get(idx));
+                    prodEdit.addUpdateListener(new ActionListener() {
                             public void actionPerformed(ActionEvent e) {
                                 if (UnitOfWork.getCurrent() != null)
                                     UnitOfWork.getCurrent().save();

@@ -1,7 +1,7 @@
 package trabalho.dataMappers;
 
 import trabalho.dataMappers.registry.MapperRegistry;
-import exceptions.Serie3_DataMapperException;
+import exceptions.DataMapperException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,7 +37,7 @@ public class OrderMapper extends AbstractDataMapper<Integer, Order> {
         try {
             st.setInt(1, key);
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -100,7 +100,7 @@ public class OrderMapper extends AbstractDataMapper<Integer, Order> {
                 }
             }
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -128,7 +128,7 @@ public class OrderMapper extends AbstractDataMapper<Integer, Order> {
             }
             st.setInt(6, o.getId());
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -142,7 +142,7 @@ public class OrderMapper extends AbstractDataMapper<Integer, Order> {
         try {
             st.setInt(1, key);
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -151,7 +151,7 @@ public class OrderMapper extends AbstractDataMapper<Integer, Order> {
         try {
             return rs.getInt(1);
         } catch (SQLException se) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -178,7 +178,7 @@ public class OrderMapper extends AbstractDataMapper<Integer, Order> {
             return o;
         } catch (SQLException se) {
             se.printStackTrace();
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 }

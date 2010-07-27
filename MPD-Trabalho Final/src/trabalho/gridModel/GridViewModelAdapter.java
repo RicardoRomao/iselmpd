@@ -9,6 +9,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import annotations.VisibleProperty;
+import exceptions.GridViewModelException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import trabalho.propertiesUtils.PropertiesUtils;
@@ -20,7 +21,6 @@ public class GridViewModelAdapter<V> implements GridViewModel<V> {
     private Map<String, Method> _properties = null;
     private final List<V> _elems;
     private final List<TableModelListener> _listeners;
-    public List<V> listed = new LinkedList<V>();
 
     public GridViewModelAdapter() { this(null); }
 
@@ -117,16 +117,26 @@ public class GridViewModelAdapter<V> implements GridViewModel<V> {
 
     @Override
     public void setValueAt(Object obj, int row, int col) {
-        _elems.set(row, (V)obj);
+        ensurePropertiesLoaded();
+        if (_properties != null) {
+            try {
+                _properties.get(getColumnName(col)).invoke(_elems.get(row), obj);
+            } catch (IllegalAccessException ex) {
+                throw new GridViewModelException();
+            } catch (IllegalArgumentException ex) {
+                throw new GridViewModelException();
+            } catch (InvocationTargetException ex) {
+                throw new GridViewModelException();
+            }
+        }
         TableModelEvent evt = new TableModelEvent(this, row);
         fireChanged(evt);
-
     }
 
-    public V get(int index){
-        return _elems.get(index);
-    }
+    @Override
+    public V get(int index){ return _elems.get(index); }
 
-    public int indexOf(V e) { return _elems.indexOf(e); }
+    @Override
+    public void set(int index, V e) { _elems.set(index, e); }
 
 }

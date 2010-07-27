@@ -61,7 +61,7 @@ public class OrderDetailsMapperTest extends NorthwindTest {
     //@Test
     public void canGetById() {
         OrderDetails od = odMapper.getById(new PkOrderDetails(10250, 41));
-        assertEquals(od.getQuantity(),10);
+        assertEquals(od.getQuantity(),new Double(10));
     }
 
     //@Test

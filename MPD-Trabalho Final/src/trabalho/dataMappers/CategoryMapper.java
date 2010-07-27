@@ -1,6 +1,6 @@
 package trabalho.dataMappers;
 
-import exceptions.Serie3_DataMapperException;
+import exceptions.DataMapperException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +28,7 @@ public class CategoryMapper extends AbstractDataMapper<Integer, Category> {
         try {
             st.setInt(1, key);
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -47,7 +47,7 @@ public class CategoryMapper extends AbstractDataMapper<Integer, Category> {
             st.setString(1, c.getCategoryName());
             st.setString(2, c.getDescription());
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -64,7 +64,7 @@ public class CategoryMapper extends AbstractDataMapper<Integer, Category> {
             st.setString(2, c.getDescription());
             st.setInt(3, c.getId());
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -78,7 +78,7 @@ public class CategoryMapper extends AbstractDataMapper<Integer, Category> {
         try{
             st.setInt(1, key);
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -87,7 +87,7 @@ public class CategoryMapper extends AbstractDataMapper<Integer, Category> {
         try {
             return rs.getInt(1);
         } catch (SQLException se) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -101,7 +101,7 @@ public class CategoryMapper extends AbstractDataMapper<Integer, Category> {
             );
             return c;
         } catch (SQLException se) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 

@@ -21,14 +21,6 @@ public class TableModelAdapter<T> extends AbstractTableModel implements List<T> 
     private final LinkedList<T> _elems = new LinkedList<T>();
     private Map<String, Method> _properties;
 
-    public TableModelAdapter(Class<?> klass) {
-//        _properties = PropertiesUtils.getVisibleProperties(klass, new IPropertyFilter(){
-//            public boolean accept(VisibleProperty prop) {
-//                return prop.kind() == PropertyKind.Simple;
-//            }
-//        });
-    }
-
     private synchronized void ensurePropertiesLoaded() {
         if (_properties == null && _elems.size() > 0) {
             _properties = PropertiesUtils.getVisibleProperties(_elems.get(0), new IPropertyFilter() {
@@ -69,7 +61,6 @@ public class TableModelAdapter<T> extends AbstractTableModel implements List<T> 
             }
         }
         return obj;
-        //return _elems.get(row);
     }
 
 

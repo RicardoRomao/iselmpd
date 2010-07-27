@@ -17,9 +17,6 @@ public class ComboBoxModelAdapter<T> implements ComboBoxModel, List<T> {
     public void setSelectedItem(Object anItem) {
         if (_elems.contains(anItem))
             _selected = _elems.indexOf(anItem);
-        else
-            _selected = 0;
-
     }
 
     public Object getSelectedItem() {
@@ -35,11 +32,9 @@ public class ComboBoxModelAdapter<T> implements ComboBoxModel, List<T> {
     }
 
     public void addListDataListener(ListDataListener l) {
-        //addListDataListener(l);
     }
 
     public void removeListDataListener(ListDataListener l) {
-        //removeListDataListener(l);
     }
 
     public int size() {

@@ -1,25 +1,27 @@
 package trabalho.gridView.controller;
 
-import trabalho.gridModel.GridViewModelAdapter;
+import trabalho.gridModel.GridViewModel;
 import trabalho.propertiesViewer.PropertiesViewer;
 import utils.Utils;
 
 public class DetailsAction implements IGridViewAction {
 
-    private final GridViewModelAdapter _model;
+    private final GridViewModel _model;
 
-    public DetailsAction(GridViewModelAdapter model) {
+    public DetailsAction(GridViewModel model) {
         _model = model;
     }
 
-    public String getName() {
-        return "Details";
-    }
+    public String getName() { return "Details"; }
 
     public void actionPerformed(int[] arg) {
-        final Object obj = _model.get(arg[0]);
-        PropertiesViewer pView = new PropertiesViewer(obj);
-        Utils.launchDialog(pView, true, "Details");
+        if (arg.length == 0) return;
+        PropertiesViewer pView;
+        for (int i = 0; i<arg.length; i++) {
+            final Object obj = _model.get(arg[i]);
+            pView = new PropertiesViewer(obj);
+            Utils.launchDialog(pView, true, "Details");
+        }
     }
 
 }

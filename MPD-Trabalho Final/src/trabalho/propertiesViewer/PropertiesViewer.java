@@ -23,7 +23,6 @@ public class PropertiesViewer<T> extends AbstractPropertiesForm<T> {
 
     public PropertiesViewer(T t) {
         super(t);
-        doPopulatePropsForm();
     }
 
     public void doPopulatePropsForm() {
@@ -44,7 +43,7 @@ public class PropertiesViewer<T> extends AbstractPropertiesForm<T> {
 
             if (kind == PropertyKind.Simple) {
                 _propField = getTextField(value.getValue() == null ? "" : value.getValue().toString());
-                _properties.put(key, new PropertyMembers(_propField));
+                //_properties.put(key, new PropertyMembers(_propField));
                 _propsForm.add(_propField);
             } else if (kind == PropertyKind.Complex) {
                 _propsForm.add(getDetailsButton(key,value.getMethod()));

@@ -1,7 +1,7 @@
 package trabalho.dataMappers;
 
 import trabalho.dataMappers.registry.MapperRegistry;
-import exceptions.Serie3_DataMapperException;
+import exceptions.DataMapperException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +35,7 @@ public class OrderDetailsMapper extends AbstractDataMapper<PkOrderDetails, Order
             st.setInt(1, key.getOrderId());
             st.setInt(2, key.getProductId());
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -81,16 +81,16 @@ public class OrderDetailsMapper extends AbstractDataMapper<PkOrderDetails, Order
             if (o.getOrder() != null && o.getOrder().hasId()) {
                 st.setInt(4, o.getOrder().getId());
             } else {
-                throw new Serie3_DataMapperException();
+                throw new DataMapperException();
             }
             if (o.getProduct() != null && o.getProduct().hasId()) {
                 st.setInt(5, o.getProduct().getId());
             } else {
-                throw new Serie3_DataMapperException();
+                throw new DataMapperException();
             }
             o.setId(new PkOrderDetails(o.getOrder().getId(), o.getProduct().getId()));
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -118,7 +118,7 @@ public class OrderDetailsMapper extends AbstractDataMapper<PkOrderDetails, Order
             }
 
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -133,7 +133,7 @@ public class OrderDetailsMapper extends AbstractDataMapper<PkOrderDetails, Order
             st.setInt(1, key.getOrderId());
             st.setInt(2, key.getProductId());
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -143,7 +143,7 @@ public class OrderDetailsMapper extends AbstractDataMapper<PkOrderDetails, Order
             return new PkOrderDetails(rs.getInt(1), rs.getInt(2));
         } catch (SQLException se) {
             se.printStackTrace();
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -165,7 +165,7 @@ public class OrderDetailsMapper extends AbstractDataMapper<PkOrderDetails, Order
             );
             return od;
         } catch (SQLException se) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 }
