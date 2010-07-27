@@ -37,7 +37,7 @@ public class MainView extends JComponent{
         add(getLabel(".: DEETC - Departamento de Engenharia Informática e de Computadores :."));
     }
 
-    private JButton getDomainObjectSelector(String title, final Class<?> klass, final IDataMapper mapper) {
+    private JButton getDomainObjectSelector(String title, final Class<? extends DomainObject> klass, final IDataMapper mapper) {
         
         JButton btn = new JButton(title);
         btn.addActionListener(new ActionListener() {

@@ -1,11 +1,16 @@
 package utils;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dialog.ModalExclusionType;
+import java.awt.Font;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.multi.MultiLabelUI;
 
 public class Utils {
 
@@ -35,13 +40,16 @@ public class Utils {
         frame.add(cmp);
         frame.setVisible(true);
         frame.pack();
-
-//        frame.addWindowListener(new WindowAdapter() {
-//
-//            @Override
-//            public void windowClosing(WindowEvent e) {
-//                System.exit(0);
-//            }
-//        });
     }
+
+    public static void showError(String msg, String title) {
+        JTextArea txt = new JTextArea(msg);
+        txt.setOpaque(true);
+        txt.setBackground(Color.WHITE);
+        txt.setForeground(Color.RED);
+        txt.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        txt.setEditable(false);
+        utils.Utils.launchFrame(txt, title);
+    }
+
 }

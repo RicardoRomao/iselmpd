@@ -1,6 +1,7 @@
 package trabalho.propertiesViewer;
 
 import exceptions.AbstractEditablePropsFormException;
+import exceptions.DomainObjectValidatorException;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,12 +21,13 @@ import trabalho.propertiesUtils.PropertyInfo;
 import trabalho.propertiesUtils.PropertyKind;
 import trabalho.propertySetter.GenericPropertySetter;
 import trabalho.propertySetter.IPropertySetter;
+import utils.Utils;
 
 public abstract class AbstractEditablePropertiesForm<T> extends AbstractPropertiesForm<T> {
    
     private Map<String, PropertyMembers> _properties;
     private JButton _submitBtn;
-    private Collection<ActionListener> _submitObservers;
+    private Collection<ActionListener> _settersObservingSubmit;
     private Collection<ActionListener> _postSubmitObservers;
 
     public abstract String getSubmitBtnText();
@@ -38,10 +40,12 @@ public abstract class AbstractEditablePropertiesForm<T> extends AbstractProperti
     class PropertyMembers implements ActionListener {
 
         private final IPropertyValue _value;
+        private final String _name;
         private IPropertySetter<T> _setter;
 
-        public PropertyMembers(IPropertyValue value) {
+        public PropertyMembers(IPropertyValue value, String name) {
             _value = value;
+            _name = name;
         }
 
         public void editEnable(IPropertySetter<T> setter) {
@@ -50,7 +54,16 @@ public abstract class AbstractEditablePropertiesForm<T> extends AbstractProperti
         }
 
         public void actionPerformed(ActionEvent e) {
-            _setter.setValue(_obj,_value.getValue());
+            try {
+                _setter.setValue(_obj,_value.getValue());
+            } catch (DomainObjectValidatorException v) {
+                Utils.showError(
+                        "Error setting property '" + _name + "'.\n" +
+                        v.getMessage() +
+                        "\nNo changes where made to property."
+                        , "Validator error"
+                );
+            }
         }
     }
 
@@ -89,7 +102,7 @@ public abstract class AbstractEditablePropertiesForm<T> extends AbstractProperti
                             public void setEnabled(boolean enable) {
                                 propField.setEnabled(enable);
                             }
-                        }
+                        }, key
                     ));
                     _propsForm.add(propField);
 
@@ -109,7 +122,7 @@ public abstract class AbstractEditablePropertiesForm<T> extends AbstractProperti
                                 public void setEnabled(boolean enable) {
                                     propCombo.setEnabled(enable);
                                 }
-                            }
+                            }, key
                         ));
                         _propsForm.add(propCombo);
                     } catch (IllegalAccessException ex) {
@@ -135,7 +148,7 @@ public abstract class AbstractEditablePropertiesForm<T> extends AbstractProperti
             add(_submitBtn,BorderLayout.SOUTH);
              _submitBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    for (ActionListener listener : _submitObservers)
+                    for (ActionListener listener : _settersObservingSubmit)
                         listener.actionPerformed(e);
                     for (ActionListener listener : _postSubmitObservers)
                         listener.actionPerformed(e);
@@ -157,9 +170,9 @@ public abstract class AbstractEditablePropertiesForm<T> extends AbstractProperti
     }
 
     private void addSubmitListener(ActionListener listener) {
-        if (_submitObservers == null)
-            _submitObservers = new LinkedList<ActionListener>();
-        _submitObservers.add(listener);
+        if (_settersObservingSubmit == null)
+            _settersObservingSubmit = new LinkedList<ActionListener>();
+        _settersObservingSubmit.add(listener);
     }
 
     public void addUpdateListener(ActionListener listener) {
@@ -178,7 +191,4 @@ public abstract class AbstractEditablePropertiesForm<T> extends AbstractProperti
         cmb.setSelectedItem(comboModel.getSelectedItem());
         return cmb;
     }
-
-    
-
 }
