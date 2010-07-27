@@ -1,8 +1,7 @@
 package dataMappersTests;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import northwind.NorthwindTest;
 import org.junit.After;
 import org.junit.Before;
@@ -94,9 +93,8 @@ public class OrderDetailsMapperTest extends NorthwindTest {
     public void canInsertNewOrderDetailsWNewOrder() {
         Customer c1 = cMapper.getById("BERGS");
         Shipper s1 = sMapper.getById(3);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(2010, 07, 16, 8, 20, 59));
-        Order o1 = new Order(c1, cal, "New order to test order details","Somewhere", s1);
+        Date date = new Date(2010, 07, 16);
+        Order o1 = new Order(c1, date, "New order to test order details","Somewhere", s1);
         Product p1 = pMapper.getById(3);
         //assertTrue(o1.getDetails().size() == 0);
         OrderDetails od = new OrderDetails (o1, p1, 12.3f, 10, 0.3f);
@@ -123,9 +121,8 @@ public class OrderDetailsMapperTest extends NorthwindTest {
         //Creation of new Order
         Customer c1 = cMapper.getById("BERGS");
         Shipper s1 = sMapper.getById(3);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(2010, 07, 16, 8, 20, 59));
-        Order o1 = new Order(c1, cal, "Test new order details with new order and product","Somewhere", s1);
+        Date date = new Date(2010, 07, 16);
+        Order o1 = new Order(c1, date, "Test new order details with new order and product","Somewhere", s1);
         assertTrue(o1.getDetails().size() == 0);
 
         //Creation of new Product

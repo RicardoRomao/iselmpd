@@ -9,8 +9,10 @@ import utils.Utils;
 public class Program {
 
     public static void main(String[] args) {
+
         UnitOfWork uow = new UnitOfWork(new JdbcConnector(JdbcDataSource.getDataSource()));
         UnitOfWork.setCurrent(uow);
         Utils.launchFrame(new MainView(),".: MPD Trabalho 3 :.");
+        
     }
 }

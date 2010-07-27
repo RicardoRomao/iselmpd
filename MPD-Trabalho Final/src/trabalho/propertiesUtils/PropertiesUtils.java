@@ -4,31 +4,15 @@ import annotations.VisibleProperty;
 import exceptions.PropertiesUtilsException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Map;
 
 public class PropertiesUtils {
 
-    public static Map<String, Object> getvisibleProperties(Object obj) {
-        Map<String, Object> ret = new Hashtable<String, Object>();
-        Method[] methods = obj.getClass().getDeclaredMethods();
-
-        for (Method method : methods) {
-            if (method.getParameterTypes().length == 0 && method.isAnnotationPresent(VisibleProperty.class)) {
-                try {
-                    ret.put(method.getAnnotation(VisibleProperty.class).name(), method.invoke(obj));
-                } catch (IllegalAccessException ex) {
-                    throw new PropertiesUtilsException();
-                } catch (InvocationTargetException ex) {
-                    throw new PropertiesUtilsException();
-                }
-            }
-        }
-        return ret;
-    }
-
     public static Map<String, PropertyInfo> getVisiblePropertiesWithKind(Object obj) {
         Map<String, PropertyInfo> ret = new Hashtable<String, PropertyInfo>();
+        Collection<Method> validators = null;
         Method[] methods = obj.getClass().getDeclaredMethods();
         PropertyKind kind;
         VisibleProperty annot;
@@ -37,11 +21,10 @@ public class PropertiesUtils {
             if (method.getParameterTypes().length == 0 && method.isAnnotationPresent(VisibleProperty.class)) {
                 annot = method.getAnnotation(VisibleProperty.class);
                 kind = annot.kind();
+
                 if (kind == PropertyKind.Simple) {
                     try {
-                        System.out.println("Method " + method.getName());
-                        ret.put(method.getAnnotation(
-                            VisibleProperty.class).name(),
+                        ret.put(annot.name(),
                             new PropertyInfo(
                                 method.invoke(obj),
                                 kind,
@@ -52,13 +35,11 @@ public class PropertiesUtils {
                     } catch (IllegalAccessException ex) {
                         throw new PropertiesUtilsException();
                     } catch (InvocationTargetException ex) {
-                        ex.printStackTrace();
                         throw new PropertiesUtilsException();
                     }
                 }
                 else {
-                    ret.put(method.getAnnotation(
-                        VisibleProperty.class).name(),
+                    ret.put(annot.name(),
                         new PropertyInfo(
                             method,
                             kind,

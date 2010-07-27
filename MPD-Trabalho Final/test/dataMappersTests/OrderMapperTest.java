@@ -1,8 +1,7 @@
 package dataMappersTests;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import northwind.NorthwindTest;
 import org.junit.After;
 import org.junit.Before;
@@ -64,9 +63,8 @@ public class OrderMapperTest extends NorthwindTest{
     public void canInsertNewOrder() {
         Shipper s1 = sMapper.getById(2);
         Customer c1 = cMapper.getById("BLONP");
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(2010, 07, 16, 8, 20, 59));
-        Order o = new Order(c1, cal, "Receivers Address", "Guadalajara", s1);
+        Date date = new Date(2010, 07, 16);
+        Order o = new Order(c1, date, "Receivers Address", "Guadalajara", s1);
 
         UnitOfWork.getCurrent().save();
 
@@ -85,9 +83,8 @@ public class OrderMapperTest extends NorthwindTest{
     public void canInsertNewOrderWNewShipper() {
         Customer c1 = cMapper.getById("BERGS");
         Shipper s1 = new Shipper("Transatlantic", "(351)24324234");
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(2010, 07, 16, 8, 20, 59));
-        Order o = new Order(c1, cal, "Order inserted with clean Shipper","Somewhere", s1);
+        Date date = new Date(2010, 07, 16);
+        Order o = new Order(c1, date, "Order inserted with clean Shipper","Somewhere", s1);
         UnitOfWork.getCurrent().save();
     }
 
@@ -96,9 +93,8 @@ public class OrderMapperTest extends NorthwindTest{
         Customer c1 = new Customer("ZZTOP", "Andy Summers",
                 "Tunes Warehouse","Lisboa","Portugal","+351218805318");
         Shipper s1 = sMapper.getById(3);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(2010, 07, 16, 8, 20, 59));
-        Order o = new Order(c1, cal,"Order inserted with clean Customer","Bells Beach", s1);
+        Date date = new Date(2010, 07, 16);
+        Order o = new Order(c1, date,"Order inserted with clean Customer","Bells Beach", s1);
         UnitOfWork.getCurrent().save();
     }
 
@@ -107,9 +103,8 @@ public class OrderMapperTest extends NorthwindTest{
         Customer c1 = new Customer("ZZTOP", "Andy Summers",
                 "Tunes Warehouse","Lisboa","Portugal","+351218805318");
         Shipper s1 = new Shipper("Transatlantic", "(351)24324234");
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(2010, 07, 16, 8, 20, 59));
-        Order o = new Order(c1, cal, "Order inserted with clean Customer","Bells Beach", s1);
+        Date date = new Date(2010, 07, 16);
+        Order o = new Order(c1, date, "Order inserted with clean Customer","Bells Beach", s1);
         UnitOfWork.getCurrent().save();
     }
 
