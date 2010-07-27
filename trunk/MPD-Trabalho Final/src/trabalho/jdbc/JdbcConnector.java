@@ -1,6 +1,6 @@
 package trabalho.jdbc;
 
-import exceptions.Trabalho_JdbcConnectorException;
+import exceptions.JdbcConnectorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -29,7 +29,7 @@ public class JdbcConnector {
             }
         }catch(SQLException e) {
             e.printStackTrace();
-            throw new Trabalho_JdbcConnectorException();
+            throw new JdbcConnectorException();
         }
     }
 

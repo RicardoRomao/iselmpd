@@ -1,6 +1,6 @@
 package trabalho.dataMappers;
 
-import exceptions.Serie3_DataMapperException;
+import exceptions.DataMapperException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +29,7 @@ public class SupplierMapper extends AbstractDataMapper<Integer, Supplier> {
         try {
             st.setInt(1, key);
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -51,7 +51,7 @@ public class SupplierMapper extends AbstractDataMapper<Integer, Supplier> {
             st.setString(4, s.getCountry());
             st.setString(5, s.getPhone());
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -71,7 +71,7 @@ public class SupplierMapper extends AbstractDataMapper<Integer, Supplier> {
             st.setString(5, s.getPhone());
             st.setInt(6, s.getId());
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -85,7 +85,7 @@ public class SupplierMapper extends AbstractDataMapper<Integer, Supplier> {
         try {
             st.setInt(1, key);
         } catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -94,7 +94,7 @@ public class SupplierMapper extends AbstractDataMapper<Integer, Supplier> {
         try {
             return rs.getInt(1);
         } catch (SQLException se) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -110,7 +110,7 @@ public class SupplierMapper extends AbstractDataMapper<Integer, Supplier> {
             );
             return s;
         } catch (SQLException se) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 }

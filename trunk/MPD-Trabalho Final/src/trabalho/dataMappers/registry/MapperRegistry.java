@@ -56,4 +56,8 @@ public class MapperRegistry {
     public Collection<IDataMapper<?,? extends DomainObject>> getAllMappersInReverse() {
         return Collections.unmodifiableCollection(_mappers.values());
     }
+
+    public Collection<Class<? extends DomainObject>> getAllDomainObjectClasses() {
+        return Collections.unmodifiableCollection(_mappers.keySet());
+    }
 }

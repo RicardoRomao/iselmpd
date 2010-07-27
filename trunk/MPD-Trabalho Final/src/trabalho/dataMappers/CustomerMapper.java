@@ -1,6 +1,6 @@
 package trabalho.dataMappers;
 
-import exceptions.Serie3_DataMapperException;
+import exceptions.DataMapperException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,7 +30,7 @@ public class CustomerMapper extends AbstractDataMapper<String, Customer> {
             st.setString(1, key);
         }
         catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -53,7 +53,7 @@ public class CustomerMapper extends AbstractDataMapper<String, Customer> {
             st.setString(5,c.getCountry());
             st.setString(6,c.getPhone());
         }catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -73,7 +73,7 @@ public class CustomerMapper extends AbstractDataMapper<String, Customer> {
             st.setString(5,c.getPhone());
             st.setString(6,c.getId());
         }catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -87,7 +87,7 @@ public class CustomerMapper extends AbstractDataMapper<String, Customer> {
         try {
             st.setString(1,key);
         }catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -97,7 +97,7 @@ public class CustomerMapper extends AbstractDataMapper<String, Customer> {
             return rs.getString(1);
         }
         catch(SQLException se){
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -115,7 +115,7 @@ public class CustomerMapper extends AbstractDataMapper<String, Customer> {
             return c;
         }
         catch(SQLException se){
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 }

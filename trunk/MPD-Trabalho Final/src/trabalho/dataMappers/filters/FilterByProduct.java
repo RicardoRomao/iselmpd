@@ -1,6 +1,6 @@
 package trabalho.dataMappers.filters;
 
-import exceptions.Serie3_FilterException;
+import exceptions.FilterException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -19,7 +19,7 @@ public class FilterByProduct implements IFilter{
             st.setInt(1, _idVal);
         }
         catch(SQLException se){
-            throw new Serie3_FilterException();
+            throw new FilterException();
         }
     }
 }

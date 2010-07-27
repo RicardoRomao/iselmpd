@@ -1,6 +1,6 @@
 package trabalho.dataMappers;
 
-import exceptions.Serie3_DataMapperException;
+import exceptions.DataMapperException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +38,7 @@ public class ProductMapper extends AbstractDataMapper<Integer,Product>{
             st.setInt(1, key);
         }
         catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -102,7 +102,7 @@ public class ProductMapper extends AbstractDataMapper<Integer,Product>{
             }
         }
         catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -132,7 +132,7 @@ public class ProductMapper extends AbstractDataMapper<Integer,Product>{
             st.setInt(6, p.getId());
         }
         catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -147,7 +147,7 @@ public class ProductMapper extends AbstractDataMapper<Integer,Product>{
             st.setInt(1, key);
         }
         catch (SQLException e) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 
@@ -157,7 +157,7 @@ public class ProductMapper extends AbstractDataMapper<Integer,Product>{
             return rs.getInt(1);
         }
         catch (SQLException se) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
 
     }
@@ -182,7 +182,7 @@ public class ProductMapper extends AbstractDataMapper<Integer,Product>{
             return p;
         }
         catch (SQLException se) {
-            throw new Serie3_DataMapperException();
+            throw new DataMapperException();
         }
     }
 }
