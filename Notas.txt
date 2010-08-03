@@ -1,4 +1,6 @@
 1 - DomainObject acede directamente ao MapperRegistry????? então para que serve o UnitOfWork? só para fazer save??
 Os domainObjects não deviam conhecer a entidade MapperRegistry, deviam chamar o UnitOfWork.getMapper e esse sim usar o seu MapperRegistry, ou não?
 
+TableModelAdapter não devia implementar Collection???
+
 
