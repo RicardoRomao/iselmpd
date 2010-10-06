@@ -146,15 +146,15 @@ public abstract class AbstractDataMapper<IDType, DType extends DomainObject<IDTy
                 public Void exec(PreparedStatement st) throws SQLException {
                     doBindInsertStatement(st, dObj);
                     st.executeUpdate();
-                    ResultSet rs = st.getGeneratedKeys();
                     IDType key;
                     if (!dObj.hasId()) {
+                        ResultSet rs = st.getGeneratedKeys();
                         rs.next();
                         key = doGetId(rs);
+                        dObj.setId(key);
                     } else {
                         key = dObj.getId();
                     }
-                    dObj.setId(key);
                     _identityMap.put(key, dObj);
                     dObj.saved();
                     if(doInsertRequiresUpdate(dObj)) dObj.markDirty();

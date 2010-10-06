@@ -46,7 +46,7 @@ public class CustomerMapperTest extends NorthwindTest {
             assertTrue(c == cMapper.getById(c.getId()));
     }
 
-    //@Test
+    @Test
     public void canInsertNewCustomer() {
         Customer c = new Customer("ZZTOP", "Andy Summers",
                 "Tunes Warehouse","Lisboa","Portugal","+351218805318");
