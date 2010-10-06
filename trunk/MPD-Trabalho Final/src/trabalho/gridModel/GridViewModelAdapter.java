@@ -137,6 +137,10 @@ public class GridViewModelAdapter<V> implements GridViewModel<V> {
     public V get(int index){ return _elems.get(index); }
 
     @Override
-    public void set(int index, V e) { _elems.set(index, e); }
+    public void set(int index, V e) {
+        _elems.set(index, e);
+        TableModelEvent evt = new TableModelEvent(this, index);
+        fireChanged(evt);
+    }
 
 }

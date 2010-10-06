@@ -1,7 +1,6 @@
 package dataMappersTests;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import northwind.NorthwindTest;
 import org.junit.After;
 import org.junit.Before;
@@ -10,7 +9,6 @@ import trabalho.dataMappers.CategoryMapper;
 import trabalho.dataMappers.ProductMapper;
 import trabalho.dataMappers.SupplierMapper;
 import trabalho.domainObjects.Category;
-import trabalho.domainObjects.OrderDetails;
 import trabalho.domainObjects.Product;
 import trabalho.domainObjects.Supplier;
 import trabalho.unitOfWork.UnitOfWork;
@@ -58,6 +56,16 @@ public class ProductMapperTest extends NorthwindTest {
         pMapper.loadAllInto(products);
         for (Product p : products)
             assertTrue(p == pMapper.getById(p.getId()));
+    }
+
+    @Test
+    public void canUpdateCategoryAndDeleteOld() {
+        Product p1 = pMapper.getById(119);
+        Category c1 = cMapper.getById(35);
+        Category c2 = cMapper.getById(2);
+        p1.setCategory(c2);
+        c1.remove();
+        UnitOfWork.getCurrent().save();
     }
 
     @Test

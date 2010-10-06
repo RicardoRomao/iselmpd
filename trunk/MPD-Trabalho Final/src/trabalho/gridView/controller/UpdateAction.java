@@ -21,8 +21,8 @@ public class UpdateAction implements IGridViewAction {
         if (arg.length == 0) return;
         PropertiesEditor pEdit;
         for (int i = 0; i < arg.length; i++) {
-            final int idx = i;
-            final Object obj = _model.get(arg[0]);
+            final int idx = arg[i];
+            final Object obj = _model.get(arg[i]);
             pEdit = new PropertiesEditor(obj);
             pEdit.addUpdateListener(new ActionListener() {
                 @Override
